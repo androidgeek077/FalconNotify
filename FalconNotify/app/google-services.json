@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "380160189822",
+    "firebase_url": "https://falconnotify-4cd56.firebaseio.com",
+    "project_id": "falconnotify-4cd56",
+    "storage_bucket": "falconnotify-4cd56.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:380160189822:android:276420897166b1fad47f2f",
+        "android_client_info": {
+          "package_name": "app.techsol.falconnotify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "380160189822-b0efin1e04dcnkqdgbduijdrl1kbep2l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDb0quYMLo438V4_pj9S6pGNQVzPC9GE4Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "380160189822-b0efin1e04dcnkqdgbduijdrl1kbep2l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
