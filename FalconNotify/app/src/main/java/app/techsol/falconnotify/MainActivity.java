@@ -1,7 +1,6 @@
 package app.techsol.falconnotify;
 
 import android.content.Intent;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,13 +15,16 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.kaopiz.kprogresshud.KProgressHUD;
 
 
 public class MainActivity extends AppCompatActivity {
-
 
 
     KProgressHUD progressDialog;
@@ -37,14 +39,33 @@ public class MainActivity extends AppCompatActivity {
     Button btnLogin;
     private String email;
     private String password;
+    private DatabaseReference databaseReference;
+    private String UserType;
 
 
     @Override
     protected void onStart() {
         super.onStart();
-        mAuth= FirebaseAuth.getInstance();
-        if (mAuth.getCurrentUser()!=null){
-            startActivity(new Intent(MainActivity.this, DashboardActivity.class));
+        mAuth = FirebaseAuth.getInstance();
+        if (mAuth.getCurrentUser() != null) {
+
+            if (UserType.equalsIgnoreCase("admin")){
+                startActivity(new Intent(MainActivity.this, DashboardActivity.class));
+                finish();
+                progressDialog.dismiss();
+            } else if (UserType.equalsIgnoreCase("user")) {
+                startActivity(new Intent(MainActivity.this, UserDashboardActivity.class));
+                finish();
+                progressDialog.dismiss();
+
+            } else {
+                startActivity(new Intent(MainActivity.this, ViewComplaintsActivity.class));
+                finish();
+                progressDialog.dismiss();//                                            startActivity(new Intent(MainActivity.this, PoliceStationDashboardActivity.class));
+//                                            finish();
+//                                            progressDialog.dismiss();
+            }
+//            startActivity(new Intent(MainActivity.this, UserDashboardActivity.class));
         }
     }
 
@@ -53,12 +74,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference("user");
         registerReference = FirebaseDatabase.getInstance().getReference("Drivers");
 
 
-        edLoginUserEmail =  findViewById(R.id.edt_txt_email);
-        edLoginPassword =  findViewById(R.id.ed_signup_password);
-        btnLogin =  findViewById(R.id.btn_signup);
+        edLoginUserEmail = findViewById(R.id.edt_txt_email);
+        edLoginPassword = findViewById(R.id.ed_signup_password);
+        btnLogin = findViewById(R.id.btn_signup);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                     edLoginPassword.setError("Please enter password First");
                 } else {
 
-                    progressDialog= KProgressHUD.create(MainActivity.this)
+                    progressDialog = KProgressHUD.create(MainActivity.this)
                             .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                             .setAnimationSpeed(2)
                             .setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark))
@@ -88,11 +110,7 @@ public class MainActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
 
                                     if (task.isSuccessful()) {
-
-                                        startActivity(new Intent(MainActivity.this, DashboardActivity.class));
-                                        finish();
-                                        progressDialog.dismiss();
-
+                                        getUserType();
 
                                     } else {
                                         progressDialog.dismiss();
@@ -113,73 +131,55 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-//    public void logtheUserIn() {
-//        incomingEmail = edtTxtEmail.getText().toString();
-//        incomingPass = edtTxtPassword.getText().toString();
-//        if (hasActiveInternetConnection()) {
-//            if (incomingEmail.isEmpty() || incomingPass.isEmpty() || incomingPass.length() < 6) {
-//                if (incomingEmail.isEmpty() || incomingPass.isEmpty()) {
-//                    edtTxtEmail.setError("please fill all fields");
-//                    edtTxtPassword.setError("please fill all fields");
-//                } else if (incomingPass.length() < 6) {
-//                    edtTxtPassword.setError("password should be atleast 6 digit long");
-//                }
-//            } else {
-//                ConnectToServer.getSingletonInstance(getApplicationContext()).addRequestToTheRequstQeue(logTheUserInRequest(incomingEmail,incomingPass));
-//            }
-//
-//        } else {
-//            Snackbar snackbar;
-//            View v = findViewById(R.id.btn_login);
-//            snackbar = Snackbar.make(v, "No Internet", Snackbar.LENGTH_LONG);
-//            View snackBarView = snackbar.getView();
-//            snackBarView.setBackgroundColor(ContextCompat.getColor(MainActivity.this, R.color.FailuerAlert));
-//            snackbar.show();
-//
-//        }
-//    }
+
+    }
+    void getUserType() {
+        databaseReference.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                Toast.makeText(MainActivity.this, ""+dataSnapshot, Toast.LENGTH_SHORT).show();
+
+                if (dataSnapshot.exists()){
+                    UserType=dataSnapshot.child("usertype").getValue(String.class);
+                }
+                Toast.makeText(MainActivity.this, UserType, Toast.LENGTH_SHORT).show();
+                if (UserType.equalsIgnoreCase("admin")){
+                    startActivity(new Intent(MainActivity.this, DashboardActivity.class));
+                    finish();
+                    progressDialog.dismiss();
+                } else if (UserType.equalsIgnoreCase("user")) {
+                    startActivity(new Intent(MainActivity.this, UserDashboardActivity.class));
+                    finish();
+                    progressDialog.dismiss();
+
+                } else {
+                    startActivity(new Intent(MainActivity.this, ViewComplaintsActivity.class));
+                    finish();
+                    progressDialog.dismiss();//                                            startActivity(new Intent(MainActivity.this, PoliceStationDashboardActivity.class));
+//                                            finish();
+//                                            progressDialog.dismiss();
+                }
 
 
-//    ------------------INTERNET CONNECTIVITY METHODS------------------------- //
+                Toast.makeText(MainActivity.this, UserType, Toast.LENGTH_SHORT).show();
 
-//    private boolean isNetworkAvailable() {
-//        ConnectivityManager connectivityManager
-//                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-//        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-//        return activeNetworkInfo != null;
-//    }
+            }
 
-//    public boolean hasActiveInternetConnection() {
-//        if (isNetworkAvailable()) {
-//
-//            Thread thread = new Thread(new Runnable() {
-//
-//                @Override
-//                public void run() {
-//                    try {
-//                        HttpURLConnection urlc = (HttpURLConnection) (new URL("http://www.google.com").openConnection());
-//                        urlc.setRequestProperty("User-Agent", "Test");
-//                        urlc.setRequestProperty("Connection", "close");
-//                        urlc.setConnectTimeout(1500);
-//                        urlc.connect();
-//
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+//                if (dataSnapshot.exists()) {
+//                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+//                        StationModel post = postSnapshot.getValue(StationModel.class);
+//                        String Name=post.getName();
+//                        Toast.makeText(AddComplaintActivity.this, Name, Toast.LENGTH_SHORT).show();
 //                    }
 //                }
-//            });
-//
-//            thread.start();
-//            return (true);
-//        } else {
-//            Log.d("internet Checker", "No network available!");
-//            return false;
-//        }
-//
-//    }
-        //    ------------------INTERNET CONNECTIVITY METHODS------------------------- //
 
 
-        //    stringRequestMaker for basic loginURl
+
+        });
+
     }
 }

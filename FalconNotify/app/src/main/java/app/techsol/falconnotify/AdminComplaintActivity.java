@@ -13,7 +13,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,24 +21,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.w3c.dom.Text;
-
-public class ViewComplaintsActivity extends AppCompatActivity implements LocationListener {
+public class AdminComplaintActivity extends AppCompatActivity implements LocationListener {
     DatabaseReference ComplaintRef;
     RecyclerView mComplaintRecycVw;
     int value;
     private LocationManager locationManager;
-    FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_complaints);
-        auth=FirebaseAuth.getInstance();
+        setContentView(R.layout.activity_admin_complaint);
         ComplaintRef = FirebaseDatabase.getInstance().getReference("Complaints");
         mComplaintRecycVw = findViewById(R.id.recycler_vw_complaint);
         getSupportActionBar().hide();
@@ -55,23 +49,20 @@ public class ViewComplaintsActivity extends AppCompatActivity implements Locatio
     void loadData() {
 
 
-        FirebaseRecyclerOptions<ReportModel> options = new FirebaseRecyclerOptions.Builder<ReportModel>()
-                .setQuery(ComplaintRef, ReportModel.class)
+        FirebaseRecyclerOptions<StationModel> options = new FirebaseRecyclerOptions.Builder<StationModel>()
+                .setQuery(ComplaintRef, StationModel.class)
                 .build();
 
-        FirebaseRecyclerAdapter<ReportModel, ProductViewHolder> adapter = new FirebaseRecyclerAdapter<ReportModel, ProductViewHolder>(options) {
+        FirebaseRecyclerAdapter<StationModel, ProductViewHolder> adapter = new FirebaseRecyclerAdapter<StationModel, ProductViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull final ProductViewHolder holder, int position, @NonNull final ReportModel model) {
+            protected void onBindViewHolder(@NonNull final ProductViewHolder holder, int position, @NonNull final StationModel model) {
                 DisplayMetrics displaymetrics = new DisplayMetrics();
                 getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-
-                if (model.getReportid().equalsIgnoreCase(auth.getCurrentUser().getUid())){
-                    holder.ComplaintHeadlineTV.setText(model.getHeadline());
-                    holder.ComplaintStatusTV.setText(model.getReportstatus());
-                }
+                //if you need three fix imageview in width
+                holder.HotelName.setText(model.getName());
 
 
-//                Toast.makeText(ViewComplaintsActivity.this, model.getLongitude(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(AdminComplaintActivity.this, model.getLongitude(), Toast.LENGTH_SHORT).show();
 
 
             }
@@ -116,15 +107,19 @@ public class ViewComplaintsActivity extends AppCompatActivity implements Locatio
     static class ProductViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView ComplaintHeadlineTV;
-        TextView ComplaintStatusTV;
+        TextView HotelName, mTextField, PasswordVersionsTV, StageStartTime;
+
+        LinearLayout StartTimeLL;
+        FrameLayout ChnageStageStatusFL;
+        ImageView stageUnloacked, stageLocked;
+        LinearLayout getView;
 
 
         ProductViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            ComplaintHeadlineTV = itemView.findViewById(R.id.ComplaintHeadlineTV);
-            ComplaintStatusTV = itemView.findViewById(R.id.ComplaintStatusTV);
+            HotelName = itemView.findViewById(R.id.ComplaintHeadlineTV);
+//            getView = itemView.findViewById(R.id.getView);
 //            mTextField = itemView.findViewById(R.id.mTextField);
 
 

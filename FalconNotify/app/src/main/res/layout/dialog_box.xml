@@ -1,0 +1,67 @@
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.cardview.widget.CardView
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+   <TextView
+       android:padding="5dp"
+
+       android:gravity="center"
+       android:textSize="18sp"
+       android:textStyle="bold"
+       android:text="@string/headlines"
+       android:layout_weight="1"
+       android:layout_width="0dp"
+       android:layout_height="wrap_content" />
+            <View
+                android:background="#7E7979"
+                android:layout_width="1dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:padding="5dp"
+                android:id="@+id/reportHeadlines"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        <LinearLayout
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/details"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+            <View
+                android:background="#7E7979"
+                android:layout_width="1dp"
+                android:layout_height="match_parent" />
+            <TextView
+                android:padding="5dp"
+                android:id="@+id/detailsTV"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

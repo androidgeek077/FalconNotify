@@ -72,7 +72,7 @@ import android.content.Context;
             @Override
             public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 
-                View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.hotel_item_layout, viewGroup, false);
+                View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.complaint_item_layout, viewGroup, false);
                 return new ProductViewHolder(view);
             }
         };
@@ -120,7 +120,7 @@ import android.content.Context;
         ProductViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            HotelName = itemView.findViewById(R.id.hotelNameTV);
+            HotelName = itemView.findViewById(R.id.ComplaintHeadlineTV);
 //            getView = itemView.findViewById(R.id.getView);
 //            mTextField = itemView.findViewById(R.id.mTextField);
 

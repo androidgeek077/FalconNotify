@@ -6,10 +6,12 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,13 +24,19 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.kaopiz.kprogresshud.KProgressHUD;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class SignUpActivity extends AppCompatActivity {
@@ -64,6 +72,8 @@ public class SignUpActivity extends AppCompatActivity {
 
     UserModel Model;
     private Button mSelectImgBtn;
+    private String userIdStr;
+    private String UserType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +81,7 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
         databaseReference = FirebaseDatabase.getInstance().getReference("user");
         registerStudent = FirebaseDatabase.getInstance().getReference("user");
-        mProfilePicStorageReference= FirebaseStorage.getInstance().getReference();
+        mProfilePicStorageReference= FirebaseStorage.getInstance().getReference("profilePic");
         mAuth = FirebaseAuth.getInstance();
 
         edName = findViewById(R.id.ed_signup_name);
@@ -127,28 +137,29 @@ public class SignUpActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                uploadProduct("https://firebasestorage.googleapis.com/v0/b/mechabot-d487d.appspot.com/o/32566846_1783747771719216_5113386920709193728_n.jpg?alt=media&token=dd05209b-b72d-45bb-8ca2-cf3c8d76175f");
+                                userIdStr=auth.getCurrentUser().getUid();
+//                                uploadProduct("https://firebasestorage.googleapis.com/v0/b/mechabot-d487d.appspot.com/o/32566846_1783747771719216_5113386920709193728_n.jpg?alt=media&token=dd05209b-b72d-45bb-8ca2-cf3c8d76175f");
                                 progressDialog.dismiss();
-//                                profilePicRef = mProfilePicStorageReference.child(selectedProfileImageUri.getLastPathSegment());
-//                                profilePicRef.putFile(selectedProfileImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                                    @Override
-//                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//
-//                                        profilePicRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                                            @Override
-//                                            public void onSuccess(Uri uri) {
-//                                                downloadUri = uri.toString();
-//                                                uploadProduct(downloadUri);
-//                                            }
-//                                        });
-//                                    }
-//                                }).addOnFailureListener(new OnFailureListener() {
-//                                    @Override
-//                                    public void onFailure(@NonNull Exception e) {
-//                                        progressDialog.dismiss();
-//                                        Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-//                                    }
-//                                });
+                                profilePicRef = mProfilePicStorageReference.child(selectedProfileImageUri.getLastPathSegment());
+                                profilePicRef.putFile(selectedProfileImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                                        profilePicRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                downloadUri = uri.toString();
+                                                uploadProduct(downloadUri, userIdStr);
+                                            }
+                                        });
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        progressDialog.dismiss();
+                                        Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
                         }
                     });
@@ -181,9 +192,9 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
-    public void uploadProduct(String ImageUrl) {
+    public void uploadProduct(String ImageUrl, String Userid) {
 
-        userModel = new UserModel(name, email, password, Phone, ImageUrl);
+        userModel = new UserModel(Userid ,name, email, password, Phone, ImageUrl, "user");
         databaseReference.child(FirebaseAuth.getInstance().getUid()).setValue(userModel).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -207,6 +218,9 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
 
 
 }

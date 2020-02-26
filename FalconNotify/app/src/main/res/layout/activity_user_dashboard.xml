@@ -8,8 +8,9 @@
         android:layout_height="match_parent"
         android:layout_weight="1">
         <androidx.cardview.widget.CardView
+
             android:layout_margin="10dp"
-            android:id="@+id/addPoliceStationCV"
+            android:id="@+id/SubmitReportCV"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent" >
@@ -27,7 +28,7 @@
                 <TextView
                     android:textSize="20sp"
                     android:gravity="center"
-                    android:text="Add Police Station"
+                    android:text="Submit Report"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight=".2" />
@@ -71,7 +72,7 @@
         android:layout_weight="1">
         <androidx.cardview.widget.CardView
             android:layout_margin="10dp"
-            android:id="@+id/getComplaint"
+            android:id="@+id/ViewUserCompainltCV"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent" >
@@ -79,13 +80,12 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
                 <ImageView
+                    android:src="@drawable/ic_complaint"
+                    android:padding="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:padding="20dp"
-                    android:src="@drawable/ic_complaint" />
+                    android:layout_weight="1"/>
 
                 <TextView
                     android:textSize="20sp"
@@ -117,7 +117,7 @@
                 <TextView
                     android:textSize="20sp"
                     android:gravity="center"
-                    android:text="View User"
+                    android:text="Submit Feedback"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight=".2" />

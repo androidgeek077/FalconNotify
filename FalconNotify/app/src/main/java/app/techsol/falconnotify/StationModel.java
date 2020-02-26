@@ -1,11 +1,30 @@
 package app.techsol.falconnotify;
 
 public class StationModel {
-    String name;
-    String registrationno;
-    String address;
+    private String name;
+    private String registrationno;
+    private String address;
+    private String userid;
+    private String stationemail;
+    private String usertype;
 
-    public StationModel() {
+    public String getUsertype() {
+        return usertype;
+    }
+
+    public void setUsertype(String usertype) {
+        this.usertype = usertype;
+    }
+
+    public StationModel(String name, String registrationno, String address, String userid, String stationemail, String usertype, String stationpassword, String helpline) {
+        this.name = name;
+        this.registrationno = registrationno;
+        this.address = address;
+        this.userid = userid;
+        this.stationemail = stationemail;
+        this.usertype = usertype;
+        this.stationpassword = stationpassword;
+        this.helpline = helpline;
     }
 
     public String getName() {
@@ -32,20 +51,58 @@ public class StationModel {
         this.address = address;
     }
 
-    public String getHelplineno() {
-        return helplineno;
+    public String getUserid() {
+        return userid;
     }
 
-    public void setHelplineno(String helplineno) {
-        this.helplineno = helplineno;
+    public void setUserid(String userid) {
+        this.userid = userid;
     }
 
-    String helplineno;
+    public String getStationemail() {
+        return stationemail;
+    }
 
-    public StationModel(String name, String registrationno, String address, String helplineno) {
+    public void setStationemail(String stationemail) {
+        this.stationemail = stationemail;
+    }
+
+    public String getStationpassword() {
+        return stationpassword;
+    }
+
+    public void setStationpassword(String stationpassword) {
+        this.stationpassword = stationpassword;
+    }
+
+    public StationModel(String name, String registrationno, String address, String userid, String stationemail, String stationpassword) {
         this.name = name;
         this.registrationno = registrationno;
         this.address = address;
-        this.helplineno = helplineno;
+        this.userid = userid;
+        this.stationemail = stationemail;
+        this.stationpassword = stationpassword;
+    }
+
+    String stationpassword;
+
+    public String getHelpline() {
+        return helpline;
+    }
+
+    public void setHelpline(String helpline) {
+        this.helpline = helpline;
+    }
+
+    private String helpline;
+
+    public StationModel(String name, String registrationno, String address, String userid, String stationemail, String stationpassword, String helpline) {
+        this.name = name;
+        this.registrationno = registrationno;
+        this.address = address;
+        this.userid = userid;
+        this.stationemail = stationemail;
+        this.stationpassword = stationpassword;
+        this.helpline = helpline;
     }
 }

@@ -1,28 +1,7 @@
 package app.techsol.falconnotify;
 public class UserModel {
 
-    private String name;
-    private String email;
-    private String password;
-    private String id;
     private String userid;
-    private String phone;
-    private String ImageUrl;
-
-    public UserModel(String name, String email, String phone, String imageUrl) {
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        ImageUrl = imageUrl;
-    }
-
-    public UserModel(String name, String email, String password, String phone, String imageUrl) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.phone = phone;
-        ImageUrl = imageUrl;
-    }
 
     public String getUserid() {
         return userid;
@@ -32,12 +11,29 @@ public class UserModel {
         this.userid = userid;
     }
 
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
+    public String getEmail() {
+        return email;
+    }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-public UserModel() {
-        }
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public String getPhone() {
         return phone;
@@ -55,42 +51,30 @@ public UserModel() {
         ImageUrl = imageUrl;
     }
 
-    public String getpassword() {
-        return password;
-        }
+    public String getUsertype() {
+        return usertype;
+    }
 
-public void setpassword(String password) {
-        this.password = password;
-        }
+    public void setUsertype(String usertype) {
+        this.usertype = usertype;
+    }
 
-
-
-public String getname() {
-        return name;
-        }
-
-public void setname(String name) {
+    public UserModel(String userid, String name, String email, String password, String phone, String imageUrl, String usertype) {
+        this.userid = userid;
         this.name = name;
-        }
-
-public String getemail() {
-        return email;
-        }
-
-public void setemail(String email) {
         this.email = email;
-        }
+        this.password = password;
+        this.phone = phone;
+        ImageUrl = imageUrl;
+        this.usertype = usertype;
+    }
 
+    private String name;
+    private String email;
+    private String password;
 
+    private String phone;
+    private String ImageUrl;
+    private String usertype;
 
-public String getid() {
-        return id;
-        }
-
-public void setid(String id) {
-        this.id = id;
-        }
-
-
-        }
-
+}

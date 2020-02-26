@@ -9,7 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ViewComplaintsActivity"></activity>
+        <activity android:name=".AdminComplaintActivity"></activity>
+        <activity android:name=".ViewUserComplaintActivity" />
+        <activity android:name=".AddComplaintActivity" />
+        <activity android:name=".UserDashboardActivity" />
+        <activity android:name=".ViewComplaintsActivity" />
         <activity android:name=".ViewPoliceStationsActivity" />
         <activity android:name=".AddPoliceStationActivity" />
         <activity android:name=".SignUpActivity" />
