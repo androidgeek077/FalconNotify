@@ -1,4 +1,4 @@
-package app.techsol.falconnotify;
+package AdminActivities;
 
 
 import android.location.Location;
@@ -26,27 +26,27 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import Models.ReportModel;
+import Models.UserModel;
+import app.techsol.falconnotify.R;
 
-public class ViewComplaintsActivity extends AppCompatActivity implements LocationListener {
-    DatabaseReference ComplaintRef, updatereportRef, databaseReference;
+public class ViewUserActivity extends AppCompatActivity implements LocationListener {
+    DatabaseReference UserRef, updatereportRef, databaseReference;
     RecyclerView mComplaintRecycVw;
     int value;
-    private LocationManager locationManager;
     FirebaseAuth auth;
-    private String UserType="police";
+    private LocationManager locationManager;
+    private String UserType = "police";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_complaints);
-        auth=FirebaseAuth.getInstance();
-        ComplaintRef = FirebaseDatabase.getInstance().getReference("Complaints");
+        setContentView(R.layout.activity_view_user);
+        auth = FirebaseAuth.getInstance();
+        UserRef = FirebaseDatabase.getInstance().getReference("Complaints");
         databaseReference = FirebaseDatabase.getInstance().getReference("user");
 
         mComplaintRecycVw = findViewById(R.id.recycler_vw_complaint);
         getSupportActionBar().hide();
-        getUserType();
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mComplaintRecycVw.setLayoutManager(mLayoutManager);
@@ -58,38 +58,23 @@ public class ViewComplaintsActivity extends AppCompatActivity implements Locatio
     void loadData() {
 
 
-        FirebaseRecyclerOptions<ReportModel> options = new FirebaseRecyclerOptions.Builder<ReportModel>()
-                .setQuery(ComplaintRef, ReportModel.class)
+        FirebaseRecyclerOptions<UserModel> options = new FirebaseRecyclerOptions.Builder<UserModel>()
+                .setQuery(databaseReference, UserModel.class)
                 .build();
 
-        FirebaseRecyclerAdapter<ReportModel, ProductViewHolder> adapter = new FirebaseRecyclerAdapter<ReportModel, ProductViewHolder>(options) {
+        FirebaseRecyclerAdapter<UserModel, ProductViewHolder> adapter = new FirebaseRecyclerAdapter<UserModel, ProductViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull final ProductViewHolder holder, int position, @NonNull final ReportModel model) {
+            protected void onBindViewHolder(@NonNull final ProductViewHolder holder, int position, @NonNull final UserModel model) {
                 DisplayMetrics displaymetrics = new DisplayMetrics();
                 getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-
-                if (model.getReportid().equalsIgnoreCase(auth.getCurrentUser().getUid())){
-                    holder.ComplaintHeadlineTV.setText(model.getHeadline());
-                    holder.ComplaintStatusTV.setText(model.getReportstatus());
-                } else if (model.getPoliceStation().equalsIgnoreCase("Satellite Town")){
-                    holder.ComplaintHeadlineTV.setText(model.getHeadline());
-                    holder.ComplaintStatusTV.setText(model.getReportstatus());
-                }
-                holder.ComplaintStatusTV.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (UserType.equalsIgnoreCase("police") && model.getReportstatus().equalsIgnoreCase("initialized")){
-                            ComplaintRef.child(model.getComplaintid()).child("reportstatus").setValue("Processing");
-                        } else if (UserType.equalsIgnoreCase("police") && model.getReportstatus().equalsIgnoreCase("Processing")){
-                            ComplaintRef.child(model.getComplaintid()).child("reportstatus").setValue("Resolved");
-                        }else if (UserType.equalsIgnoreCase("user") && model.getReportstatus().equalsIgnoreCase("Resolved")){
-                            ComplaintRef.child(model.getComplaintid()).setValue("Confirmed");
-                        }
-                    }
-                });
+                holder.ComplaintHeadlineTV.setText(model.getName());
+                holder.ComplaintStatusTV.setText(model.getPhone());
 
 
-//                Toast.makeText(ViewComplaintsActivity.this, model.getLongitude(), Toast.LENGTH_SHORT).show();
+
+
+
+//                Toast.makeText(ViewUserActivity.this, model.getLongitude(), Toast.LENGTH_SHORT).show();
 
 
             }
@@ -130,25 +115,6 @@ public class ViewComplaintsActivity extends AppCompatActivity implements Locatio
 
     }
 
-
-    static class ProductViewHolder extends RecyclerView.ViewHolder {
-
-
-        TextView ComplaintHeadlineTV;
-        TextView ComplaintStatusTV;
-
-
-        ProductViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            ComplaintHeadlineTV = itemView.findViewById(R.id.ComplaintHeadlineTV);
-            ComplaintStatusTV = itemView.findViewById(R.id.ComplaintStatusTV);
-//            mTextField = itemView.findViewById(R.id.mTextField);
-
-
-        }
-    }
-
     void getUserType() {
         databaseReference.child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -157,7 +123,7 @@ public class ViewComplaintsActivity extends AppCompatActivity implements Locatio
 
                 if (dataSnapshot.exists()) {
                     UserType = dataSnapshot.child("usertype").getValue(String.class);
-                    Toast.makeText(ViewComplaintsActivity.this, UserType, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ViewUserActivity.this, UserType, Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -197,6 +163,24 @@ public class ViewComplaintsActivity extends AppCompatActivity implements Locatio
             }
 
         });
+    }
+
+    static class ProductViewHolder extends RecyclerView.ViewHolder {
+
+
+        TextView ComplaintHeadlineTV;
+        TextView ComplaintStatusTV;
+
+
+        ProductViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            ComplaintHeadlineTV = itemView.findViewById(R.id.ComplaintHeadlineTV);
+            ComplaintStatusTV = itemView.findViewById(R.id.ComplaintStatusTV);
+//            mTextField = itemView.findViewById(R.id.mTextField);
+
+
+        }
     }
 
 }

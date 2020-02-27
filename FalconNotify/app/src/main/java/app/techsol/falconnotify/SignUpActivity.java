@@ -6,12 +6,10 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,19 +22,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.kaopiz.kprogresshud.KProgressHUD;
 
-import java.util.ArrayList;
-import java.util.List;
+import Models.UserModel;
 
 
 public class SignUpActivity extends AppCompatActivity {
@@ -65,22 +59,19 @@ public class SignUpActivity extends AppCompatActivity {
     private Button btnSignUp;
 
 
-    Double StdLatDouble = 0.0;
-    Double StdLongDouble = 0.0;
+
 
     String name, email, password, Phone, ImgUrl;
 
-    UserModel Model;
     private Button mSelectImgBtn;
     private String userIdStr;
-    private String UserType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        auth=FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference("user");
-        registerStudent = FirebaseDatabase.getInstance().getReference("user");
         mProfilePicStorageReference= FirebaseStorage.getInstance().getReference("profilePic");
         mAuth = FirebaseAuth.getInstance();
 

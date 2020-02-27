@@ -1,4 +1,4 @@
-package app.techsol.falconnotify;
+package AdminActivities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,36 +11,46 @@ import androidx.cardview.widget.CardView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import AdminActivities.ViewUserComplaintActivity;
+import app.techsol.falconnotify.MainActivity;
+import app.techsol.falconnotify.R;
 
-public class UserDashboardActivity extends AppCompatActivity {
-    CardView SubmitReportCV, ViewUserCompainltCV, SubmitFeedbackCV;
+public class DashboardActivity extends AppCompatActivity {
+    CardView addPoliceStationCV, ViewStationsCV;
     private FirebaseAuth auth;
+    private CardView getComplaint;
+    private CardView ViewUserCV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_dashboard);
+        setContentView(R.layout.activity_dashboard);
         auth=FirebaseAuth.getInstance();
-        SubmitReportCV = findViewById(R.id.SubmitReportCV);
-        SubmitReportCV.setOnClickListener(new View.OnClickListener() {
+        addPoliceStationCV=findViewById(R.id.addPoliceStationCV);
+        addPoliceStationCV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getBaseContext(), AddComplaintActivity.class));
+                startActivity(new Intent(getBaseContext(), AddPoliceStationActivity.class));
             }
         });
-        ViewUserCompainltCV = findViewById(R.id.ViewUserCompainltCV);
-        ViewUserCompainltCV.setOnClickListener(new View.OnClickListener() {
+        ViewStationsCV = findViewById(R.id.ViewStationsCV);
+        ViewStationsCV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getBaseContext(), ViewPoliceStationsActivity.class));
+            }
+        });
+        getComplaint = findViewById(R.id.getComplaint);
+        getComplaint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getBaseContext(), ViewUserComplaintActivity.class));
             }
         });
-        SubmitFeedbackCV = findViewById(R.id.SubmitFeedbackCV);
-        SubmitFeedbackCV.setOnClickListener(new View.OnClickListener() {
+        ViewUserCV = findViewById(R.id.ViewUserCV);
+        ViewUserCV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getBaseContext(), SubmitFeedbackActivity.class));
+                startActivity(new Intent(getBaseContext(), ViewUserActivity.class));
             }
         });
     }

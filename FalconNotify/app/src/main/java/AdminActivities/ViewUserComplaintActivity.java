@@ -1,4 +1,6 @@
-package app.techsol.falconnotify;
+package AdminActivities;
+
+
 
 
 import android.location.Location;
@@ -9,10 +11,8 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,25 +21,33 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import Models.StationModel;
+import Models.ReportModel;
+import app.techsol.falconnotify.R;
 
-public class AdminComplaintActivity extends AppCompatActivity implements LocationListener {
-    DatabaseReference ComplaintRef;
+public class ViewUserComplaintActivity extends AppCompatActivity{
+    DatabaseReference ComplaintRef, updatereportRef, databaseReference;
     RecyclerView mComplaintRecycVw;
     int value;
     private LocationManager locationManager;
+    FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_complaint);
+        setContentView(R.layout.activity_view_user_complaint);
+        auth=FirebaseAuth.getInstance();
         ComplaintRef = FirebaseDatabase.getInstance().getReference("Complaints");
+        databaseReference = FirebaseDatabase.getInstance().getReference("user");
+
         mComplaintRecycVw = findViewById(R.id.recycler_vw_complaint);
         getSupportActionBar().hide();
-
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         mComplaintRecycVw.setLayoutManager(mLayoutManager);
@@ -51,20 +59,21 @@ public class AdminComplaintActivity extends AppCompatActivity implements Locatio
     void loadData() {
 
 
-        FirebaseRecyclerOptions<StationModel> options = new FirebaseRecyclerOptions.Builder<StationModel>()
-                .setQuery(ComplaintRef, StationModel.class)
+        FirebaseRecyclerOptions<ReportModel> options = new FirebaseRecyclerOptions.Builder<ReportModel>()
+                .setQuery(ComplaintRef, ReportModel.class)
                 .build();
 
-        FirebaseRecyclerAdapter<StationModel, ProductViewHolder> adapter = new FirebaseRecyclerAdapter<StationModel, ProductViewHolder>(options) {
+        FirebaseRecyclerAdapter<ReportModel, ProductViewHolder> adapter = new FirebaseRecyclerAdapter<ReportModel, ProductViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull final ProductViewHolder holder, int position, @NonNull final StationModel model) {
+            protected void onBindViewHolder(@NonNull final ProductViewHolder holder, int position, @NonNull final ReportModel model) {
                 DisplayMetrics displaymetrics = new DisplayMetrics();
                 getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-                //if you need three fix imageview in width
-                holder.HotelName.setText(model.getName());
+
+                holder.ComplaintHeadlineTV.setText(model.getHeadline());
+                holder.ComplaintStatusTV.setText(model.getReportstatus());
 
 
-//                Toast.makeText(AdminComplaintActivity.this, model.getLongitude(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ViewComplaintsActivity.this, model.getLongitude(), Toast.LENGTH_SHORT).show();
 
 
             }
@@ -83,49 +92,28 @@ public class AdminComplaintActivity extends AppCompatActivity implements Locatio
 
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-//        distance(location.getLatitude(), location.getLongitude(), )
-//        Toast.makeText(this, "Latitude:" + location.getLatitude() + ", Longitude:" + location.getLongitude(), Toast.LENGTH_SHORT).show();
 
-    }
 
-    @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
 
-    }
-
-    @Override
-    public void onProviderEnabled(String s) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String s) {
-
-    }
 
 
     static class ProductViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView HotelName, mTextField, PasswordVersionsTV, StageStartTime;
-
-        LinearLayout StartTimeLL;
-        FrameLayout ChnageStageStatusFL;
-        ImageView stageUnloacked, stageLocked;
-        LinearLayout getView;
+        TextView ComplaintHeadlineTV;
+        TextView ComplaintStatusTV;
 
 
         ProductViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            HotelName = itemView.findViewById(R.id.ComplaintHeadlineTV);
-//            getView = itemView.findViewById(R.id.getView);
+            ComplaintHeadlineTV = itemView.findViewById(R.id.ComplaintHeadlineTV);
+            ComplaintStatusTV = itemView.findViewById(R.id.ComplaintStatusTV);
 //            mTextField = itemView.findViewById(R.id.mTextField);
 
 
         }
     }
+
 
 }

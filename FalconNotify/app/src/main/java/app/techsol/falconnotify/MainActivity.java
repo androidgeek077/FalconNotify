@@ -19,9 +19,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.kaopiz.kprogresshud.KProgressHUD;
+
+import AdminActivities.DashboardActivity;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -40,32 +41,17 @@ public class MainActivity extends AppCompatActivity {
     private String email;
     private String password;
     private DatabaseReference databaseReference;
-    private String UserType;
+    private String UserType="";
 
 
     @Override
     protected void onStart() {
         super.onStart();
         mAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference("user");
+
         if (mAuth.getCurrentUser() != null) {
-
-            if (UserType.equalsIgnoreCase("admin")){
-                startActivity(new Intent(MainActivity.this, DashboardActivity.class));
-                finish();
-                progressDialog.dismiss();
-            } else if (UserType.equalsIgnoreCase("user")) {
-                startActivity(new Intent(MainActivity.this, UserDashboardActivity.class));
-                finish();
-                progressDialog.dismiss();
-
-            } else {
-                startActivity(new Intent(MainActivity.this, ViewComplaintsActivity.class));
-                finish();
-                progressDialog.dismiss();//                                            startActivity(new Intent(MainActivity.this, PoliceStationDashboardActivity.class));
-//                                            finish();
-//                                            progressDialog.dismiss();
-            }
-//            startActivity(new Intent(MainActivity.this, UserDashboardActivity.class));
+            getUserType();
         }
     }
 
@@ -134,41 +120,40 @@ public class MainActivity extends AppCompatActivity {
 
     }
     void getUserType() {
-        databaseReference.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        if(mAuth.getCurrentUser()!=null) {
+            databaseReference.child(mAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 //                Toast.makeText(MainActivity.this, ""+dataSnapshot, Toast.LENGTH_SHORT).show();
 
-                if (dataSnapshot.exists()){
-                    UserType=dataSnapshot.child("usertype").getValue(String.class);
-                }
-                Toast.makeText(MainActivity.this, UserType, Toast.LENGTH_SHORT).show();
-                if (UserType.equalsIgnoreCase("admin")){
-                    startActivity(new Intent(MainActivity.this, DashboardActivity.class));
-                    finish();
-                    progressDialog.dismiss();
-                } else if (UserType.equalsIgnoreCase("user")) {
-                    startActivity(new Intent(MainActivity.this, UserDashboardActivity.class));
-                    finish();
-                    progressDialog.dismiss();
+                    if (dataSnapshot.exists()) {
+                        UserType = dataSnapshot.child("usertype").getValue(String.class);
+                    }
+                    if (UserType.equalsIgnoreCase("admin")) {
+                        startActivity(new Intent(MainActivity.this, DashboardActivity.class));
+                        finish();
+                    } else if (UserType.equalsIgnoreCase("user")) {
+                        startActivity(new Intent(MainActivity.this, UserDashboardActivity.class));
+                        finish();
 
-                } else {
-                    startActivity(new Intent(MainActivity.this, ViewComplaintsActivity.class));
-                    finish();
-                    progressDialog.dismiss();//                                            startActivity(new Intent(MainActivity.this, PoliceStationDashboardActivity.class));
+
+                    } else {
+                        startActivity(new Intent(MainActivity.this, ViewComplaintsActivity.class));
+                        finish();
+
+                        //                                            startActivity(new Intent(MainActivity.this, PoliceStationDashboardActivity.class));
 //                                            finish();
 //                                            progressDialog.dismiss();
+                    }
+
+
+
                 }
 
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-                Toast.makeText(MainActivity.this, UserType, Toast.LENGTH_SHORT).show();
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
+                }
 //                if (dataSnapshot.exists()) {
 //                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
 //                        StationModel post = postSnapshot.getValue(StationModel.class);
@@ -178,8 +163,8 @@ public class MainActivity extends AppCompatActivity {
 //                }
 
 
-
-        });
+            });
+        }
 
     }
 }

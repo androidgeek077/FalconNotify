@@ -99,7 +99,7 @@
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
             android:layout_margin="10dp"
-
+            android:id="@+id/SubmitFeedbackCV"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent" >

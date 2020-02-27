@@ -36,6 +36,8 @@ import com.kaopiz.kprogresshud.KProgressHUD;
 import java.util.ArrayList;
 import java.util.List;
 
+import Models.ReportModel;
+
 
 public class AddComplaintActivity extends AppCompatActivity {
 
@@ -63,7 +65,7 @@ public class AddComplaintActivity extends AppCompatActivity {
     private Uri selectedProfileImageUri;
     private Button btnSignUp;
     private Button mSelectImgBtn;
-    Spinner areaSpinner;
+    Spinner PoliceStationSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +76,7 @@ public class AddComplaintActivity extends AppCompatActivity {
         mProfilePicStorageReference = FirebaseStorage.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
 
-        areaSpinner = (Spinner) findViewById(R.id.spinner);
+        PoliceStationSpinner = (Spinner) findViewById(R.id.spinner);
 
 
         edHeadLine = findViewById(R.id.edt_txt_headline);
@@ -89,7 +91,6 @@ public class AddComplaintActivity extends AppCompatActivity {
                 getProfilePicture();
             }
         });
-
         getStations();
         btnSignUp = findViewById(R.id.btn_signup);
 
@@ -127,7 +128,7 @@ public class AddComplaintActivity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     downloadUri = uri.toString();
-                                    uploadProduct(downloadUri);
+                                    updateReport(downloadUri);
                                 }
                             });
                         }
@@ -167,9 +168,9 @@ public class AddComplaintActivity extends AppCompatActivity {
 
     }
 
-    public void uploadProduct(String ImageUrl) {
+    public void updateReport(String ImageUrl) {
         String ComplaintId=databaseReference.push().getKey();
-        SelectedSpinner = areaSpinner.getSelectedItem().toString();
+        SelectedSpinner = PoliceStationSpinner.getSelectedItem().toString();
         reportModel = new ReportModel(ComplaintId,FirebaseAuth.getInstance().getUid(),  "initialized", name, email, ImageUrl, SelectedSpinner);
         databaseReference.child(ComplaintId).setValue(reportModel).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -212,9 +213,9 @@ public class AddComplaintActivity extends AppCompatActivity {
                         PoliceStations.add(areaName);
                     }
 
-                    ArrayAdapter<String> areasAdapter = new ArrayAdapter<String>(AddComplaintActivity.this, android.R.layout.simple_spinner_item, PoliceStations);
-                    areasAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    areaSpinner.setAdapter(areasAdapter);
+                    ArrayAdapter<String> PoliceStationAdapter = new ArrayAdapter<String>(AddComplaintActivity.this, android.R.layout.simple_spinner_item, PoliceStations);
+                    PoliceStationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    PoliceStationSpinner.setAdapter(PoliceStationAdapter);
                 }
 
                 @Override

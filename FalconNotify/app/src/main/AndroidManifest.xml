@@ -4,27 +4,34 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AdminComplaintActivity"></activity>
-        <activity android:name=".ViewUserComplaintActivity" />
-        <activity android:name=".AddComplaintActivity" />
-        <activity android:name=".UserDashboardActivity" />
-        <activity android:name=".ViewComplaintsActivity" />
-        <activity android:name=".ViewPoliceStationsActivity" />
-        <activity android:name=".AddPoliceStationActivity" />
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".DashboardActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".SubmitFeedbackActivity"></activity>
+        <activity android:name="AdminActivities.ViewUserActivity" />
+        <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".AdminComplaintActivity" />
+        <activity android:name="AdminActivities.ViewUserComplaintActivity" />
+        <activity android:name=".AddComplaintActivity" />
+        <activity android:name=".UserDashboardActivity" />
+        <activity android:name=".ViewComplaintsActivity" />
+        <activity android:name="AdminActivities.ViewPoliceStationsActivity" />
+        <activity android:name="AdminActivities.AddPoliceStationActivity" />
+        <activity android:name=".SignUpActivity" />
+        <activity android:name="AdminActivities.DashboardActivity" />
+        <activity android:name=".MainActivity" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

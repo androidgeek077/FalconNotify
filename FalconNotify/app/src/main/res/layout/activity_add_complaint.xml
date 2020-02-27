@@ -56,7 +56,7 @@
                     android:layout_height="wrap_content"
                     android:hint="Details"
                     android:minHeight="150dp"
-                    android:textColor="@color/white" />
+                     />
             </com.google.android.material.textfield.TextInputLayout>
 
 

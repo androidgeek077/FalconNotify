@@ -1,48 +1,48 @@
-package app.techsol.falconnotify;
-
+package AdminActivities;
 
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+        import android.location.LocationListener;
+        import android.location.LocationManager;
+        import android.os.Bundle;
+        import android.util.DisplayMetrics;
+        import android.view.LayoutInflater;
+        import android.view.View;
+        import android.view.ViewGroup;
+        import android.widget.FrameLayout;
+        import android.widget.ImageView;
+        import android.widget.LinearLayout;
+        import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+        import androidx.appcompat.app.AppCompatActivity;
+        import androidx.recyclerview.widget.LinearLayoutManager;
+        import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+        import com.firebase.ui.database.FirebaseRecyclerAdapter;
+        import com.firebase.ui.database.FirebaseRecyclerOptions;
+        import com.google.firebase.database.DatabaseReference;
+        import com.google.firebase.database.FirebaseDatabase;
 
 import Models.StationModel;
+import app.techsol.falconnotify.R;
 
-public class AdminComplaintActivity extends AppCompatActivity implements LocationListener {
-    DatabaseReference ComplaintRef;
-    RecyclerView mComplaintRecycVw;
+public class ViewPoliceStationsActivity extends AppCompatActivity implements LocationListener {
+    DatabaseReference PoliceStationRef;
+    RecyclerView mProductRecycVw;
     int value;
     private LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_complaint);
-        ComplaintRef = FirebaseDatabase.getInstance().getReference("Complaints");
-        mComplaintRecycVw = findViewById(R.id.recycler_vw_complaint);
+        setContentView(R.layout.activity_view_police_stations);
+        PoliceStationRef = FirebaseDatabase.getInstance().getReference("PoliceStations");
+        mProductRecycVw = findViewById(R.id.recycler_vw_catagory);
         getSupportActionBar().hide();
 
-
+        
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mComplaintRecycVw.setLayoutManager(mLayoutManager);
+        mProductRecycVw.setLayoutManager(mLayoutManager);
 
         loadData();
 
@@ -52,7 +52,7 @@ public class AdminComplaintActivity extends AppCompatActivity implements Locatio
 
 
         FirebaseRecyclerOptions<StationModel> options = new FirebaseRecyclerOptions.Builder<StationModel>()
-                .setQuery(ComplaintRef, StationModel.class)
+                .setQuery(PoliceStationRef, StationModel.class)
                 .build();
 
         FirebaseRecyclerAdapter<StationModel, ProductViewHolder> adapter = new FirebaseRecyclerAdapter<StationModel, ProductViewHolder>(options) {
@@ -61,10 +61,12 @@ public class AdminComplaintActivity extends AppCompatActivity implements Locatio
                 DisplayMetrics displaymetrics = new DisplayMetrics();
                 getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
                 //if you need three fix imageview in width
-                holder.HotelName.setText(model.getName());
+                holder.PoliceStationName.setText(model.getName());
+                
+                // ctrl+R
 
 
-//                Toast.makeText(AdminComplaintActivity.this, model.getLongitude(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ViewPoliceStationsActivity.this, model.getLongitude(), Toast.LENGTH_SHORT).show();
 
 
             }
@@ -78,7 +80,7 @@ public class AdminComplaintActivity extends AppCompatActivity implements Locatio
             }
         };
 
-        mComplaintRecycVw.setAdapter(adapter);
+        mProductRecycVw.setAdapter(adapter);
         adapter.startListening();
 
     }
@@ -106,10 +108,11 @@ public class AdminComplaintActivity extends AppCompatActivity implements Locatio
     }
 
 
+
     static class ProductViewHolder extends RecyclerView.ViewHolder {
 
 
-        TextView HotelName, mTextField, PasswordVersionsTV, StageStartTime;
+        TextView PoliceStationName, mTextField, PasswordVersionsTV, StageStartTime;
 
         LinearLayout StartTimeLL;
         FrameLayout ChnageStageStatusFL;
@@ -120,7 +123,7 @@ public class AdminComplaintActivity extends AppCompatActivity implements Locatio
         ProductViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            HotelName = itemView.findViewById(R.id.ComplaintHeadlineTV);
+            PoliceStationName = itemView.findViewById(R.id.ComplaintHeadlineTV);
 //            getView = itemView.findViewById(R.id.getView);
 //            mTextField = itemView.findViewById(R.id.mTextField);
 
